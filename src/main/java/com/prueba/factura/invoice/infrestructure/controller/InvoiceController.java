@@ -71,8 +71,8 @@ public class InvoiceController {
 	 */
 	@RequestMapping
 	@ResponseBody
-	public ResponseEntity<List<InvoiceTableDto>> findAll(){
-		List<InvoiceTableDto> invoiceDtos = new ArrayList<InvoiceTableDto>();
+	public ResponseEntity<List<InvoiceDto>> findAll(){
+		List<InvoiceDto> invoiceDtos = new ArrayList<InvoiceDto>();
 		invoiceDtos = this.invoiceServ.getAll();
 		return ResponseEntity.ok(invoiceDtos);
 	}

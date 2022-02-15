@@ -6,11 +6,13 @@ import java.util.Calendar;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.prueba.factura.customer.domain.entity.Customer;
+import com.prueba.factura.customer.infrestructure.dto.CustomerWriteDto;
 
 public class InvoiceWriteDto {
 	@NotNull
 	@JsonProperty("folio")
-	private String folio;
+	private Long folio;
 	
 	@NotNull
 	@JsonProperty("descripcion")
@@ -26,15 +28,17 @@ public class InvoiceWriteDto {
 	private LocalDate fecha;
 
 	@NotNull
-	@JsonProperty("idCustomer")
-	private Long idCustomer;
+	@JsonProperty("cliente")
+	private CustomerWriteDto customerDto;
 
 
-	public String getFolio() {
+	
+
+	public Long getFolio() {
 		return folio;
 	}
 
-	public void setFolio(String folio) {
+	public void setFolio(Long folio) {
 		this.folio = folio;
 	}
 
@@ -63,14 +67,13 @@ public class InvoiceWriteDto {
 		this.fecha = fecha;
 	}
 
-	public Long getIdCustomer() {
-		return idCustomer;
+	public CustomerWriteDto getCustomerDto() {
+		return customerDto;
 	}
 
-	public void setIdCustomer(Long idCustomer) {
-		this.idCustomer = idCustomer;
+	public void setCustomerDto(CustomerWriteDto customerDto) {
+		this.customerDto = customerDto;
 	}
 
-	
 	
 }

@@ -20,7 +20,7 @@ public interface InvoiceService	 {
 	
 	public List<InvoiceTableDto> getAllByDate(LocalDate desde, LocalDate hasta);
 	
-	public List<InvoiceTableDto> getAll ();
+	public List<InvoiceDto> getAll ();
 	
 	
 	

@@ -5,9 +5,15 @@ import java.util.Calendar;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.prueba.factura.customer.infrestructure.dto.CustomerDto;
 
+
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class InvoiceDto {
 
 	@JsonProperty("id")
@@ -15,7 +21,7 @@ public class InvoiceDto {
 	
 	@NotNull
 	@JsonProperty("folio")
-	private String folio;
+	private Long folio;
 	
 	@NotNull
 	@JsonProperty("descripcion")
@@ -42,11 +48,13 @@ public class InvoiceDto {
 		this.id = id;
 	}
 
-	public String getFolio() {
+	
+
+	public Long getFolio() {
 		return folio;
 	}
 
-	public void setFolio(String folio) {
+	public void setFolio(Long folio) {
 		this.folio = folio;
 	}
 

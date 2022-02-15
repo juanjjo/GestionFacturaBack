@@ -17,7 +17,6 @@ public class CustomerWriteDto {
 	@JsonProperty("eMail")
 	private String eMailCustomer;
 
-
 	public String getNameCustomer() {
 		return nameCustomer;
 	}
@@ -41,4 +40,7 @@ public class CustomerWriteDto {
 	public void seteMailCustomer(String eMailCustomer) {
 		this.eMailCustomer = eMailCustomer;
 	}
+
+
+	
 }

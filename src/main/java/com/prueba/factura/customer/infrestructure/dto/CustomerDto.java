@@ -3,7 +3,10 @@ package com.prueba.factura.customer.infrestructure.dto;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class CustomerDto {
 	@JsonProperty("id")
     private Long id;

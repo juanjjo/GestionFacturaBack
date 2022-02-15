@@ -64,14 +64,19 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public InvoiceDto createOne(InvoiceWriteDto invoiceDto) {
 		Invoice invoice = new Invoice();
 		Customer customer = new Customer();
-		customer = this.customerDao.getById(invoiceDto.getIdCustomer());
-		if(customer == null) {
+		customer = this.customerDao.findByEmail(invoiceDto.getCustomerDto().geteMailCustomer()).orElse(null);
+		if (customer==null) {
 			return null;
 		}
-		invoice=this.mapAddInvoice.toInvoice(invoiceDto);
-		invoice.setCustomer(customer);
-		this.invoiceDao.save(invoice);
-		return this.mapInvoice.toInvoiceDto(invoice);
+		
+		System.out.println("cliente: "+customer);
+//		if(customer == null) {
+//			return null;
+//		}
+//		invoice=this.mapAddInvoice.toInvoice(invoiceDto);
+//		invoice.setCustomer(customer);
+//		this.invoiceDao.save(invoice);
+		return null;
 	}
 
 	
@@ -92,10 +97,10 @@ public class InvoiceServiceImpl implements InvoiceService{
 	 * retorna todos las facturas con formato
 	 */
 	@Override
-	public List<InvoiceTableDto> getAll() {
+	public List<InvoiceDto> getAll() {
 		List<Invoice> invoices = new ArrayList<Invoice>();
 		invoices = this.invoiceDao.findAll();
-		return mapTableInvoice.toInvoiceTableDtos(invoices);
+		return mapInvoice.toDtos(invoices);
 	}
 
 	

@@ -19,7 +19,11 @@ public interface MapInvoice {
 	
 	
 	@Mapping(source  = "invoice.customer", target = "customerDto")
-	
+
+	@Mapping(target = "id", ignore = true)
+	@Mapping(target = "customerDto.id", ignore = true)
+	@Mapping(target = "customerDto.lastNameCustomer", ignore = true)
+	@Mapping(target = "customerDto.eMailCustomer", ignore = true)
 	public InvoiceDto  toInvoiceDto (Invoice invoice);
 	
 	public List<InvoiceDto> toDtos (List<Invoice> invoices);
