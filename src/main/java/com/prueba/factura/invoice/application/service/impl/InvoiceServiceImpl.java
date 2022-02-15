@@ -1,6 +1,9 @@
 package com.prueba.factura.invoice.application.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,6 +99,14 @@ public class InvoiceServiceImpl implements InvoiceService{
 	}
 
 	
+	@Override
+	public List<InvoiceTableDto> getAllByDate(LocalDate desde,LocalDate hasta) {
+		 //SimpleDateFormat formater = new SimpleDateFormat("2022-02-23");
+		 //System.out.println(formater);
+		List<Invoice> invoices = new ArrayList<Invoice>();
+		invoices = invoiceDao.getByBeetwenFecha(desde, hasta);
+		return mapTableInvoice.toInvoiceTableDtos(invoices);
+	}
 
 
 }

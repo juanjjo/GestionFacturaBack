@@ -1,5 +1,7 @@
 package com.prueba.factura.invoice.application.service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import com.prueba.factura.invoice.infrestructure.dto.InvoiceDto;
@@ -16,6 +18,10 @@ public interface InvoiceService	 {
 	
 	public List<InvoiceTableDto> getByCustomer(String nameCustomer);
 	
+	public List<InvoiceTableDto> getAllByDate(LocalDate desde, LocalDate hasta);
+	
 	public List<InvoiceTableDto> getAll ();
+	
+	
 	
 }

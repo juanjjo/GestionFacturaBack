@@ -1,11 +1,14 @@
 package com.prueba.factura.invoice.infrestructure.controller;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -89,6 +92,18 @@ public class InvoiceController {
 		
 	}
 	
+	@RequestMapping(path = "/listar/porFecha")
+	@ResponseBody
+	public ResponseEntity<List<InvoiceTableDto>> findByFechas(
+			 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate 
+		       desde,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate 
+		       hasta){
+
+		List<InvoiceTableDto> invoiceDtos = new ArrayList<InvoiceTableDto>();	
+		invoiceDtos  = invoiceServ.getAllByDate(desde,hasta);
+		return ResponseEntity.ok(invoiceDtos);
+		
+	}
 	
 	
 }

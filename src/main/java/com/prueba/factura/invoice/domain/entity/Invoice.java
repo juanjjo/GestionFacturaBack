@@ -1,5 +1,6 @@
 package com.prueba.factura.invoice.domain.entity;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 import javax.persistence.CascadeType;
@@ -37,8 +38,7 @@ public class Invoice {
 	private String observation;
 	
 	@Column(name = "fecha", nullable = false)
-	@Temporal(TemporalType.DATE)
-	private Calendar fecha;
+	private LocalDate fecha;
 	
 	@ManyToOne(optional = false, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(name = "cliente_id")
@@ -48,7 +48,7 @@ public class Invoice {
 		
 	}
 
-	public Invoice(Long id, Long folio, String description, String observation, Calendar fecha, Customer customer) {
+	public Invoice(Long id, Long folio, String description, String observation, LocalDate fecha, Customer customer) {
 		super();
 		this.id = id;
 		this.folio = folio;
@@ -90,11 +90,11 @@ public class Invoice {
 		this.observation = observation;
 	}
 
-	public Calendar getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Calendar fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 
@@ -111,7 +111,5 @@ public class Invoice {
 		return "Invoice [id=" + id + ", folio=" + folio + ", description=" + description + ", observation="
 				+ observation + ", fecha=" + fecha + ", customer=" + customer + "]";
 	}
-
-	
 
 }

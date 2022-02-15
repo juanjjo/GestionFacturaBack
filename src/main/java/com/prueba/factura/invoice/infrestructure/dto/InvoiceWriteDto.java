@@ -1,5 +1,6 @@
 package com.prueba.factura.invoice.infrestructure.dto;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 import javax.validation.constraints.NotNull;
@@ -22,7 +23,7 @@ public class InvoiceWriteDto {
 	
 	@NotNull
 	@JsonProperty("fecha")
-	private Calendar fecha;
+	private LocalDate fecha;
 
 	@NotNull
 	@JsonProperty("idCustomer")
@@ -53,11 +54,12 @@ public class InvoiceWriteDto {
 		this.observation = observation;
 	}
 
-	public Calendar getFecha() {
+
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Calendar fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 
