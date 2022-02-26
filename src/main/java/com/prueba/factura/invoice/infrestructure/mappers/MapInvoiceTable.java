@@ -11,19 +11,17 @@ import com.prueba.factura.invoice.infrestructure.dto.InvoiceDto;
 import com.prueba.factura.invoice.infrestructure.dto.InvoiceTableDto;
 
 
+
 @Mapper(
 		componentModel = "spring",
 		uses = {MapCustomer.class}
 )
-public interface MapInvoice {
+public interface MapInvoiceTable {
+	
+	@Mapping(source  = "invoice.customer.nameCustomer", target = "nameCustomer")
+	
+	public InvoiceTableDto toInvoiceTableDto(Invoice invoice);
 	
 	
-	@Mapping(source  = "invoice.customer", target = "customerDto")
-	
-	public InvoiceDto  toInvoiceDto (Invoice invoice);
-	
-	public List<InvoiceDto> toDtos (List<Invoice> invoices);
-	
-	
-	
+	public List<InvoiceTableDto> toInvoiceTableDtos (List<Invoice> invoices);
 }

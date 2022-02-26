@@ -12,6 +12,11 @@ import com.prueba.factura.invoice.domain.entity.Invoice;
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
 	
-	@Query(value ="select * from factura a where a.id= ?1", nativeQuery = true)
-	List<Invoice> getByCustemer (Long id);
+	@Query(value ="select a.id, a.descripcion, a.fecha, a.folio, a.observacion ,a.cliente_id"
+			+ " from factura a where a.descripcion like %?1%", nativeQuery = true)
+	Invoice getByCustemerByName (String name);
+	
+	@Query(value ="select a.id, a.descripcion, a.fecha, a.folio, a.observacion, a.cliente_id"
+			+ " from factura a inner join cliente c on a.cliente_id = c.id where c.nombre like %?1%", nativeQuery = true)
+	List<Invoice> getByCustemer (String name);
 }

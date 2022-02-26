@@ -12,9 +12,11 @@ import com.prueba.factura.invoice.application.service.InvoiceService;
 import com.prueba.factura.invoice.domain.entity.Invoice;
 import com.prueba.factura.invoice.domain.repository.InvoiceRepository;
 import com.prueba.factura.invoice.infrestructure.dto.InvoiceDto;
+import com.prueba.factura.invoice.infrestructure.dto.InvoiceTableDto;
 import com.prueba.factura.invoice.infrestructure.dto.InvoiceWriteDto;
 import com.prueba.factura.invoice.infrestructure.mappers.MapInvoice;
 import com.prueba.factura.invoice.infrestructure.mappers.MapInvoiceAdd;
+import com.prueba.factura.invoice.infrestructure.mappers.MapInvoiceTable;
 
 
 
@@ -35,6 +37,13 @@ public class InvoiceServiceImpl implements InvoiceService{
 	@Autowired
 	private MapInvoiceAdd mapAddInvoice;
 	
+	@Autowired
+	private MapInvoiceTable mapTableInvoice;
+	
+	
+	/**
+	 * get One auxiliar
+	 */
 	@Override
 	public InvoiceDto getOne(Long id) {
 		Invoice invoice = new Invoice();
@@ -42,9 +51,12 @@ public class InvoiceServiceImpl implements InvoiceService{
 		if(invoice == null) {
 			return null;
 		}
-		return mapInvoice.toCustomerDto(invoice);
+		return mapInvoice.toInvoiceDto(invoice);
 	}
 
+	/**
+	 * todabia crea uno solo.. falta aun q cree
+	 */
 	@Override
 	public InvoiceDto createOne(InvoiceWriteDto invoiceDto) {
 		Invoice invoice = new Invoice();
@@ -56,19 +68,35 @@ public class InvoiceServiceImpl implements InvoiceService{
 		invoice=this.mapAddInvoice.toInvoice(invoiceDto);
 		invoice.setCustomer(customer);
 		this.invoiceDao.save(invoice);
-		return this.mapInvoice.toCustomerDto(invoice);
+		return this.mapInvoice.toInvoiceDto(invoice);
 	}
 
+	
+	
+	/**
+	 * busqueda de factura por nombre patron nombre cliente Finalizado
+	 */
 	@Override
-	public InvoiceDto getOneByCustomer(Long idCustomer) {
-		List<Invoice> invoices = new ArrayList();
-		invoices = invoiceDao.getByCustemer(idCustomer);
-//		if(invoice == null) {
-//			return null;
-//		}
-		//return mapInvoice.toCustomerDto(invoice);
-		return null;
+	public List<InvoiceTableDto> getByCustomer(String nameCustomer) {
+		List<Invoice> invoices = new ArrayList<Invoice>();
+		invoices = invoiceDao.getByCustemer(nameCustomer);
+		//System.out.println("invoices: "+ invoices);
+		return mapTableInvoice.toInvoiceTableDtos(invoices);
 	}
+
+	
+	/**
+	 * retorna todos las facturas con formato
+	 */
+	@Override
+	public List<InvoiceTableDto> getAll() {
+		List<Invoice> invoices = new ArrayList<Invoice>();
+		invoices = this.invoiceDao.findAll();
+		return mapTableInvoice.toInvoiceTableDtos(invoices);
+	}
+
+	
+
 
 }
 
