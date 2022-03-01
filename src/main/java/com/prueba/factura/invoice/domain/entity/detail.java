@@ -31,16 +31,20 @@ public class Detail {
 	private Invoice invoice;
 	
 
+	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "producto_id")
+	private Product product;
 	
 	public Detail() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Detail(Long id, Integer amount, Invoice invoice) {
+	public Detail(Long id, Integer amount, Invoice invoice, Product product) {
 		super();
 		this.id = id;
 		this.amount = amount;
 		this.invoice = invoice;
+		this.product = product;
 	}
 
 	public Long getId() {
@@ -67,11 +71,17 @@ public class Detail {
 		this.invoice = invoice;
 	}
 
+	public Product getProduct() {
+		return product;
+	}
 
+	public void setProduct(Product product) {
+		this.product = product;
+	}
 
 	@Override
 	public String toString() {
-		return "Detail [id=" + id + ", amount=" + amount + ", invoice=" + invoice + "]";
+		return "Detail [id=" + id + ", amount=" + amount + ", invoice=" + invoice + ", product=" + product + "]";
 	}
 
 	

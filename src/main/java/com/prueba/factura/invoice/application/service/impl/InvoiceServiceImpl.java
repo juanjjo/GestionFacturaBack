@@ -20,10 +20,11 @@ import com.prueba.factura.invoice.domain.repository.InvoiceRepository;
 import com.prueba.factura.invoice.infrestructure.dto.DetailDto;
 import com.prueba.factura.invoice.infrestructure.dto.InvoiceDto;
 import com.prueba.factura.invoice.infrestructure.dto.InvoiceReadDto;
-import com.prueba.factura.invoice.infrestructure.mappers.MapDetailDto;
+import com.prueba.factura.invoice.infrestructure.mappers.MapDetail;
 import com.prueba.factura.invoice.infrestructure.mappers.MapInvoice;
 import com.prueba.factura.invoice.infrestructure.mappers.MapInvoiceAdd;
 import com.prueba.factura.invoice.infrestructure.mappers.MapInvoiceRevers;
+import com.prueba.factura.product.infrestructure.mappers.MapProduct;
 
 
 
@@ -39,7 +40,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 	@Autowired
 	private MapInvoice mapInvoice;
 	@Autowired
-	private MapDetailDto mapDetail;
+	private MapDetail mapDetail;
+	@Autowired
+	private MapProduct  mapPoruct;
 	@Autowired
 	private MapInvoiceAdd mapInvoiceAdd;
 	@Autowired
@@ -64,11 +67,16 @@ public class InvoiceServiceImpl implements InvoiceService{
 		if (customer != null) {
 			return null;
 		}
+		System.out.println("detailles: "+details);
 		customer = mapCustomer.toCustomer(invoiceDto.getCustomerDto());
 		invoice = mapInvoiceRever.toInvoice(invoiceDto);
 		invoice.setDetails(details);	
+		
 		for (Detail detail : details) {
 			detail.setInvoice(invoice);
+			for (DetailDto detailDto : invoiceDto.getDetailDtos()) {
+				detail.setProduct(mapPoruct.toProduct(detailDto.getProductDto()));
+			}
 		}
 		try {
 			invoice=this.invoiceDao.save(invoice);

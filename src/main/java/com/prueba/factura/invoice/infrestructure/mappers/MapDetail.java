@@ -12,10 +12,13 @@ import com.prueba.factura.product.infrestructure.mappers.MapProduct;
 
 
 @Mapper(
-		componentModel = "spring"
+		componentModel = "spring",
+		uses = {MapProduct.class}
 )
 
-public interface MapDetailDto {
+public interface MapDetail {
+	
+	
 	
 	DetailDto toDetailDto(DetailDto detailDto);
 	Detail toDetail(Detail detail);

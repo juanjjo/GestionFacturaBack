@@ -12,5 +12,5 @@ public interface MapProduct {
 	
 	ProductDto toProducDto (Product product);
 	
-	Product toProduct (Product product);
+	Product toProduct (ProductDto product);
 }

@@ -9,7 +9,7 @@ import com.prueba.factura.invoice.infrestructure.dto.InvoiceDto;
 
 @Mapper(
 		componentModel = "spring",
-		uses = {MapCustomer.class,MapDetailDto.class}
+		uses = {MapCustomer.class,MapDetail.class}
 )
 public interface MapInvoiceRevers {
 	

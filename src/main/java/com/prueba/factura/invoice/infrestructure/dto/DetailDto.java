@@ -16,6 +16,8 @@ public class DetailDto {
 	@JsonProperty("cantidad")
 	private Integer amount;
 
+	@JsonProperty("producto")
+	private ProductDto productDto;
 	
 	public Long getId() {
 		return id;
@@ -31,6 +33,14 @@ public class DetailDto {
 
 	public void setAmount(Integer amount) {
 		this.amount = amount;
+	}
+
+	public ProductDto getProductDto() {
+		return productDto;
+	}
+
+	public void setProductDto(ProductDto productDto) {
+		this.productDto = productDto;
 	}
 
 	

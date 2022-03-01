@@ -16,6 +16,7 @@ public class Product {
 	private Long id;
 	@Column(name = "nombre", length = 45)
 	private String name;
+	
 	@Column(name = "precio")
 	private Double price;
 	
