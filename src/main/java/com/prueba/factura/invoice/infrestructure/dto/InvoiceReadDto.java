@@ -1,15 +1,21 @@
 package com.prueba.factura.invoice.infrestructure.dto;
 
 import java.time.LocalDate;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.prueba.factura.customer.domain.entity.Customer;
-import com.prueba.factura.customer.infrestructure.dto.CustomerWriteDto;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.prueba.factura.customer.infrestructure.dto.CustomerDto;
 
-public class InvoiceWriteDto {
+
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+public class InvoiceReadDto {
+	@JsonProperty("id")
+    private Long id;
+	
 	@NotNull
 	@JsonProperty("folio")
 	private Long folio;
@@ -17,7 +23,7 @@ public class InvoiceWriteDto {
 	@NotNull
 	@JsonProperty("descripcion")
 	private String description;
-	
+
 	@NotNull
 	@JsonProperty("observacion")
 	private String observation;
@@ -29,8 +35,16 @@ public class InvoiceWriteDto {
 
 	@NotNull
 	@JsonProperty("cliente")
-	private CustomerWriteDto customerDto;
+	private CustomerDto customerDto;
+	
+	
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	
 
@@ -58,6 +72,7 @@ public class InvoiceWriteDto {
 		this.observation = observation;
 	}
 
+	
 
 	public LocalDate getFecha() {
 		return fecha;
@@ -67,11 +82,11 @@ public class InvoiceWriteDto {
 		this.fecha = fecha;
 	}
 
-	public CustomerWriteDto getCustomerDto() {
+	public CustomerDto getCustomerDto() {
 		return customerDto;
 	}
 
-	public void setCustomerDto(CustomerWriteDto customerDto) {
+	public void setCustomerDto(CustomerDto customerDto) {
 		this.customerDto = customerDto;
 	}
 

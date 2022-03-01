@@ -1,32 +1,36 @@
 package com.prueba.factura.invoice.infrestructure.dto;
 
 import java.time.LocalDate;
-import java.util.Calendar;
 
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.prueba.factura.customer.infrestructure.dto.CustomerDto;
 
-public class InvoiceTableDto {
+public class InvoiceEditDto {
 	@JsonProperty("id")
     private Long id;
-	@NotNull
 	
+	@NotNull
 	@JsonProperty("folio")
-	private String folio;
+	private Long folio;
 	
 	@NotNull
 	@JsonProperty("descripcion")
 	private String description;
+
+	@NotNull
+	@JsonProperty("observacion")
+	private String observation;
 	
 	
 	@NotNull
 	@JsonProperty("fecha")
 	private LocalDate fecha;
-	
+
 	@NotNull
-	@JsonProperty("nameCustomer")
-	private String nameCustomer;
+	@JsonProperty("cliente")
+	private CustomerDto customerDto;
 
 	public Long getId() {
 		return id;
@@ -36,11 +40,13 @@ public class InvoiceTableDto {
 		this.id = id;
 	}
 
-	public String getFolio() {
+	
+
+	public Long getFolio() {
 		return folio;
 	}
 
-	public void setFolio(String folio) {
+	public void setFolio(Long folio) {
 		this.folio = folio;
 	}
 
@@ -50,6 +56,14 @@ public class InvoiceTableDto {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getObservation() {
+		return observation;
+	}
+
+	public void setObservation(String observation) {
+		this.observation = observation;
 	}
 
 	
@@ -62,13 +76,11 @@ public class InvoiceTableDto {
 		this.fecha = fecha;
 	}
 
-	public String getNameCustomer() {
-		return nameCustomer;
+	public CustomerDto getCustomerDto() {
+		return customerDto;
 	}
 
-	public void setNameCustomer(String nameCustomer) {
-		this.nameCustomer = nameCustomer;
+	public void setCustomerDto(CustomerDto customerDto) {
+		this.customerDto = customerDto;
 	}
-	
-	
 }

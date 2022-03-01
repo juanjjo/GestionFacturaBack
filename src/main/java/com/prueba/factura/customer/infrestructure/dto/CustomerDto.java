@@ -1,13 +1,16 @@
 package com.prueba.factura.customer.infrestructure.dto;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-public class CustomerDto {
+public class CustomerDto implements Serializable{
 	@JsonProperty("id")
     private Long id;
 	

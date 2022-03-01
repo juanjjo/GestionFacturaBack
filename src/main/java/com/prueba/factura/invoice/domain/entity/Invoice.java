@@ -1,7 +1,9 @@
 package com.prueba.factura.invoice.domain.entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,11 +14,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.prueba.factura.customer.domain.entity.Customer;
+
 
 
 
@@ -40,15 +42,20 @@ public class Invoice {
 	@Column(name = "fecha", nullable = false)
 	private LocalDate fecha;
 	
-	@ManyToOne(optional = false, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, fetch = FetchType.EAGER)
 	@JoinColumn(name = "cliente_id")
 	private Customer customer;
+	
+	
+	@OneToMany(mappedBy = "invoice", cascade = {CascadeType.ALL},orphanRemoval = true)
+	private List<Detail> details = new ArrayList<Detail>();
 	
 	public Invoice() {
 		
 	}
 
-	public Invoice(Long id, Long folio, String description, String observation, LocalDate fecha, Customer customer) {
+	public Invoice(Long id, Long folio, String description, String observation, LocalDate fecha, Customer customer,
+			List<Detail> details) {
 		super();
 		this.id = id;
 		this.folio = folio;
@@ -56,6 +63,7 @@ public class Invoice {
 		this.observation = observation;
 		this.fecha = fecha;
 		this.customer = customer;
+		this.details = details;
 	}
 
 	public Long getId() {
@@ -106,10 +114,19 @@ public class Invoice {
 		this.customer = customer;
 	}
 
+	public List<Detail> getDetails() {
+		return details;
+	}
+
+	public void setDetails(List<Detail> details) {
+		this.details = details;
+	}
+
 	@Override
 	public String toString() {
 		return "Invoice [id=" + id + ", folio=" + folio + ", description=" + description + ", observation="
-				+ observation + ", fecha=" + fecha + ", customer=" + customer + "]";
+				+ observation + ", fecha=" + fecha + ", customer=" + customer + ", details=" + details + "]";
 	}
+
 
 }

@@ -7,7 +7,7 @@ import com.prueba.factura.customer.application.service.CustomerService;
 import com.prueba.factura.customer.domain.entity.Customer;
 import com.prueba.factura.customer.domain.repository.CustomerRepository;
 import com.prueba.factura.customer.infrestructure.dto.CustomerDto;
-import com.prueba.factura.customer.infrestructure.dto.CustomerWriteDto;
+import com.prueba.factura.customer.infrestructure.dto.CustomerAddDto;
 import com.prueba.factura.customer.infrestructure.mappers.MapCustomer;
 
 @Service
@@ -33,7 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public CustomerDto createOne(CustomerWriteDto customerDto) {
+	public CustomerDto createOne(CustomerDto customerDto) {
 		Customer customer = new Customer();
 		customer = this.mapCustomer.toCustomer(customerDto);
 		this.customerDao.save(customer);

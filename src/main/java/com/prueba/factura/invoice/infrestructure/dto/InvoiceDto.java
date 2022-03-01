@@ -1,7 +1,10 @@
 package com.prueba.factura.invoice.infrestructure.dto;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -9,12 +12,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.prueba.factura.customer.infrestructure.dto.CustomerDto;
+import com.prueba.factura.invoice.domain.entity.Detail;
 
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-public class InvoiceDto {
+public class InvoiceDto implements Serializable{
 
 	@JsonProperty("id")
     private Long id;
@@ -26,7 +32,7 @@ public class InvoiceDto {
 	@NotNull
 	@JsonProperty("descripcion")
 	private String description;
-	
+
 	@NotNull
 	@JsonProperty("observacion")
 	private String observation;
@@ -39,7 +45,12 @@ public class InvoiceDto {
 	@NotNull
 	@JsonProperty("cliente")
 	private CustomerDto customerDto;
-
+	
+	@NotNull
+	@JsonProperty("detalle")
+	private List<DetailDto> detailDtos;
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -91,6 +102,15 @@ public class InvoiceDto {
 	public void setCustomerDto(CustomerDto customerDto) {
 		this.customerDto = customerDto;
 	}
+
+	public List<DetailDto> getDetailDtos() {
+		return detailDtos;
+	}
+
+	public void setDetailDtos(List<DetailDto> detailDtos) {
+		this.detailDtos = detailDtos;
+	}
+
 	
 	
 }

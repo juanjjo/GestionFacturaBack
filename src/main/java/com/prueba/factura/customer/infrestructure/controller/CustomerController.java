@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.prueba.factura.customer.application.service.impl.CustomerServiceImpl;
 import com.prueba.factura.customer.infrestructure.dto.CustomerDto;
-import com.prueba.factura.customer.infrestructure.dto.CustomerWriteDto;
+import com.prueba.factura.customer.infrestructure.dto.CustomerAddDto;
 
 @RestController
 @RequestMapping("/cliente")
@@ -36,7 +36,7 @@ public class CustomerController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<CustomerDto> saveCustomer(@RequestBody CustomerWriteDto customer){
+	public ResponseEntity<CustomerDto> saveCustomer(@RequestBody CustomerDto customer){
 		CustomerDto customerDto = customerService.createOne(customer);
 		return ResponseEntity.ok(customerDto);
 	}

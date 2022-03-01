@@ -3,17 +3,16 @@ package com.prueba.factura.invoice.infrestructure.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,8 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.prueba.factura.invoice.application.service.impl.InvoiceServiceImpl;
 import com.prueba.factura.invoice.infrestructure.dto.InvoiceDto;
-import com.prueba.factura.invoice.infrestructure.dto.InvoiceTableDto;
-import com.prueba.factura.invoice.infrestructure.dto.InvoiceWriteDto;
+import com.prueba.factura.invoice.infrestructure.dto.InvoiceReadDto;
 
 
 @RestController
@@ -35,19 +33,6 @@ public class InvoiceController {
 	InvoiceServiceImpl invoiceServ;
 	
 	
-	
-//	@RequestMapping(value="{id}")
-//	public ResponseEntity<InvoiceDto> findOne(@PathVariable("id") Long invoiceId){
-//		InvoiceDto invoiceDto = new InvoiceDto();
-//		invoiceDto  = invoiceServ.getOne(invoiceId);
-//		System.out.println(invoiceDto);
-//		if(invoiceDto != null) {
-//			return ResponseEntity.ok(invoiceDto);
-//		}else {
-//			return ResponseEntity.noContent().build();
-//		}
-//	}
-	
 	/**
 	 * aun por terminar
 	 * @param invoiceAdd
@@ -55,9 +40,8 @@ public class InvoiceController {
 	 */
 	@PostMapping
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<InvoiceDto> saveInvoice(@RequestBody InvoiceWriteDto invoiceAdd){
+	public ResponseEntity<InvoiceDto> saveInvoice(@RequestBody InvoiceDto invoiceAdd){
 		InvoiceDto invoiceDto = this.invoiceServ.createOne(invoiceAdd);
-		System.out.println("invoiceDto: "+invoiceDto);
 		if(invoiceDto!=null) {
 			return new ResponseEntity<>(invoiceDto, HttpStatus.CREATED);
 		}
@@ -66,13 +50,28 @@ public class InvoiceController {
 	
 	
 	/**
+	 * recurso actualiza una factura
+	 */
+	 @PutMapping(value="{id}")
+		public ResponseEntity<InvoiceDto> updateInvoice(@PathVariable("id") long id,@RequestBody InvoiceDto invoiceDto){
+		 InvoiceDto invoiceResp = new InvoiceDto();
+		 invoiceResp = this.invoiceServ.updateInvoice(id,invoiceDto);
+			if(invoiceResp == null) {
+				return ResponseEntity.noContent().build();
+			}else {
+				return ResponseEntity.ok(invoiceResp);
+			}
+		}
+	//////////////////////////////////////////// terminados ////////////////////////////
+	
+	/**
 	 * recurso get Facturas
 	 * @return
 	 */
 	@RequestMapping
 	@ResponseBody
-	public ResponseEntity<List<InvoiceDto>> findAll(){
-		List<InvoiceDto> invoiceDtos = new ArrayList<InvoiceDto>();
+	public ResponseEntity<List<InvoiceReadDto>> findAll(){
+		List<InvoiceReadDto> invoiceDtos = new ArrayList<InvoiceReadDto>();
 		invoiceDtos = this.invoiceServ.getAll();
 		return ResponseEntity.ok(invoiceDtos);
 	}
@@ -84,8 +83,8 @@ public class InvoiceController {
 	 */
 	@RequestMapping(path = "/listar/porCliente")
 	@ResponseBody
-	public ResponseEntity<List<InvoiceTableDto>> findPrueba(@RequestParam String name){
-		List<InvoiceTableDto> invoiceDtos = new ArrayList<InvoiceTableDto>();
+	public ResponseEntity<List<InvoiceReadDto>> findPrueba(@RequestParam String name){
+		List<InvoiceReadDto> invoiceDtos = new ArrayList<InvoiceReadDto>();
 		
 		invoiceDtos  = invoiceServ.getByCustomer(name);
 		return ResponseEntity.ok(invoiceDtos);
@@ -94,15 +93,30 @@ public class InvoiceController {
 	
 	@RequestMapping(path = "/listar/porFecha")
 	@ResponseBody
-	public ResponseEntity<List<InvoiceTableDto>> findByFechas(
+	public ResponseEntity<List<InvoiceReadDto>> findByFechas(
 			 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate 
 		       desde,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate 
 		       hasta){
 
-		List<InvoiceTableDto> invoiceDtos = new ArrayList<InvoiceTableDto>();	
+		List<InvoiceReadDto> invoiceDtos = new ArrayList<InvoiceReadDto>();	
 		invoiceDtos  = invoiceServ.getAllByDate(desde,hasta);
 		return ResponseEntity.ok(invoiceDtos);
 		
+	}
+	
+	
+	
+	
+	
+	/**
+	 * delete una factura
+	 * @return
+	 */
+	@DeleteMapping(value="{id}")
+	public ResponseEntity<InvoiceDto> findOne(@PathVariable("id") Long invoiceId){
+		InvoiceDto invoceDelete = new InvoiceDto();
+		invoceDelete = this.invoiceServ.deleteOne(invoiceId);
+		return ResponseEntity.ok(invoceDelete);
 	}
 	
 	

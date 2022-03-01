@@ -5,23 +5,26 @@ import java.util.Date;
 import java.util.List;
 
 import com.prueba.factura.invoice.infrestructure.dto.InvoiceDto;
-import com.prueba.factura.invoice.infrestructure.dto.InvoiceTableDto;
-import com.prueba.factura.invoice.infrestructure.dto.InvoiceWriteDto;
+import com.prueba.factura.invoice.infrestructure.dto.InvoiceReadDto;
 
 
 
 public interface InvoiceService	 {
 	
-	public InvoiceDto getOne(Long id);
 	
-	public InvoiceDto createOne(InvoiceWriteDto invoiceDto);
+
 	
-	public List<InvoiceTableDto> getByCustomer(String nameCustomer);
+	public List<InvoiceReadDto> getByCustomer(String nameCustomer);
 	
-	public List<InvoiceTableDto> getAllByDate(LocalDate desde, LocalDate hasta);
+	public List<InvoiceReadDto> getAllByDate(LocalDate desde, LocalDate hasta);
 	
-	public List<InvoiceDto> getAll ();
+	public List<InvoiceReadDto> getAll ();
 	
 	
+	public InvoiceDto createOne(InvoiceDto invoiceDto);
+	
+	public InvoiceDto deleteOne(Long id);
+	
+	public InvoiceDto updateInvoice(Long id, InvoiceDto invoiceDto);
 	
 }

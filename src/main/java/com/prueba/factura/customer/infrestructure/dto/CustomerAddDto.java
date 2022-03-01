@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CustomerWriteDto {
+public class CustomerAddDto {
 	@NotNull
 	@JsonProperty("name")
 	private String nameCustomer;

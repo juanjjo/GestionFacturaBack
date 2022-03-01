@@ -1,5 +1,7 @@
 package com.prueba.factura.customer.domain.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "cliente")
-public class Customer {
+public class Customer implements Serializable{
 	
 	@Id
 	@Column(name = "id")

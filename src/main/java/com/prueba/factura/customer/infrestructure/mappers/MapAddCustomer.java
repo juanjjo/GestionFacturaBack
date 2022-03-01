@@ -3,17 +3,14 @@ package com.prueba.factura.customer.infrestructure.mappers;
 import org.mapstruct.Mapper;
 
 import com.prueba.factura.customer.domain.entity.Customer;
-import com.prueba.factura.customer.infrestructure.dto.CustomerDto;
 import com.prueba.factura.customer.infrestructure.dto.CustomerAddDto;
-
-
-
 
 @Mapper(
 		componentModel = "spring"
 )
-public interface MapCustomer {
+public interface MapAddCustomer {
+
 	
-	public CustomerDto  toCustomerDto (Customer customer);
-	public Customer  toCustomer (CustomerDto customerDto);
+	public CustomerAddDto  toCustomerAddDto (Customer customer);
+	public Customer  toCustomer (CustomerAddDto customerDto);
 }
