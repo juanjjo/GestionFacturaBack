@@ -35,7 +35,7 @@ public class InvoiceReadDto {
 
 	@NotNull
 	@JsonProperty("cliente")
-	private CustomerDto customerDto;
+	private String nameCustomer;
 	
 	
 	public Long getId() {
@@ -82,13 +82,14 @@ public class InvoiceReadDto {
 		this.fecha = fecha;
 	}
 
-	public CustomerDto getCustomerDto() {
-		return customerDto;
+	public String getNameCustomer() {
+		return nameCustomer;
 	}
 
-	public void setCustomerDto(CustomerDto customerDto) {
-		this.customerDto = customerDto;
+	public void setNameCustomer(String nameCustomer) {
+		this.nameCustomer = nameCustomer;
 	}
 
+	
 	
 }

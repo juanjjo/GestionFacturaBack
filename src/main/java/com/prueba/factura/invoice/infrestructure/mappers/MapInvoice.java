@@ -17,15 +17,15 @@ import com.prueba.factura.invoice.infrestructure.dto.InvoiceReadDto;
 )
 public interface MapInvoice {
 	
-	
-	@Mapping(source  = "invoice.customer", target = "customerDto")
+	@Mapping(source  = "invoice.customer.nameCustomer", target = "nameCustomer")
+//	@Mapping(source  = "invoice.customer", target = "customerDto")
 
 
-	@Mapping(target = "id", ignore = true)
-	@Mapping(target = "customerDto.id", ignore = true)
-	@Mapping(target = "customerDto.lastNameCustomer", ignore = true)
-	@Mapping(target = "description", ignore = true)
-	@Mapping(target = "customerDto.eMailCustomer", ignore = true)
+//	@Mapping(target = "id", ignore = true)
+//	@Mapping(target = "customerDto.id", ignore = true)
+//	@Mapping(target = "customerDto.lastNameCustomer", ignore = true)
+//	@Mapping(target = "description", ignore = true)
+//	@Mapping(target = "customerDto.eMailCustomer", ignore = true)
 	
 	public InvoiceReadDto  toInvoiceDto (Invoice invoice);
 	
