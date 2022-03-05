@@ -26,6 +26,7 @@ import com.prueba.factura.invoice.infrestructure.mappers.MapInvoiceAdd;
 import com.prueba.factura.invoice.infrestructure.mappers.MapInvoiceRevers;
 import com.prueba.factura.product.application.Service.ProductService;
 import com.prueba.factura.product.domain.entity.Product;
+import com.prueba.factura.product.domain.repository.ProductRepository;
 import com.prueba.factura.product.infrestructure.mappers.MapProduct;
 
 
@@ -41,6 +42,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 	private DetailRepository detailDao;
 	@Autowired
 	private CustomerRepository customerDao;
+	@Autowired
+	private ProductRepository producDao;
 	
 	@Autowired
 	private MapInvoice mapInvoice;
@@ -65,6 +68,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 	/**
 	 * todabia crea uno solo.. falta aun q cree, le falta odio
 	 */
+
 	@Override
 	public InvoiceDto createOne(InvoiceDto invoiceDto) {
 		Invoice invoice = new Invoice();
@@ -88,14 +92,15 @@ public class InvoiceServiceImpl implements InvoiceService{
 		for (Detail detail : details) {
 			detail.setInvoice(invoice);
 			for (DetailDto detailDto : invoiceDto.getDetailDtos()) {
-				detail.setProduct(mapPoruct.toProduct(detailDto.getProductDto()));
+				pro=producDao.save(mapPoruct.toProduct(detailDto.getProductDto()));
+				detail.setProduct(pro);
 			}
 		}
-		try {
+		System.out.println("error save");
 			invoice=this.invoiceDao.save(invoice);
-		} catch (Exception e) {
-			System.out.println("error save");
-		}
+		 
+			
+		
 
 //		System.err.println("detalles: "+details);
 		//return mapInvoiceAdd.toInvoiceDto(invoice);
@@ -129,27 +134,29 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public InvoiceDto updateInvoice(Long id, InvoiceDto invoiceDto) {
 		Invoice invoiceFound = new Invoice();
 		invoiceFound = this.invoiceDao.findById(id).orElse(null);
-		System.out.println("eMail"+invoiceFound.getCustomer().geteMailCustomer());
-		
-		invoiceFound.setCustomer(mapCustomer.toCustomer(invoiceDto.getCustomerDto()));
-
-		
+		Customer cust = new Customer();
+		cust = this.customerDao.save(mapCustomer.toCustomer(invoiceDto.getCustomerDto()));
+		invoiceFound.setCustomer(cust);
 		if(invoiceFound ==null) {
 			return null;
 		}
 	
-		
 		Product pro = new Product();
 		Detail detailRegis = new Detail();
 		List<Detail> detailsAuxRemov = new ArrayList<Detail>();
 		List<Detail> detailsAdd = new ArrayList<Detail>();
 		for (DetailDto dtlDto : invoiceDto.getDetailDtos()) {
-			pro=this.productServ.saveProductFromFactura(dtlDto.getProductDto());
 			
 			if(dtlDto.getId()==null) {
+				detailsAdd.add(detailRegis);
+				//pro=this.productServ.saveProductFromFactura(dtlDto.getProductDto());
 				detailRegis=mapDetail.toDetail(dtlDto);
+				pro=this.producDao.save(mapPoruct.toProduct(dtlDto.getProductDto()));
+				System.out.println("id: pro"+pro.getId());		
+				detailRegis.setInvoice(invoiceFound);
 				detailRegis.setProduct(pro);
-				detailsAdd.add(detailRegis);	
+				detailRegis=detailDao.save(detailRegis);
+					
 			}else
 			{
 				for (Detail dtl : invoiceFound.getDetails()) {
@@ -157,9 +164,10 @@ public class InvoiceServiceImpl implements InvoiceService{
 					if(dtlDto.getId()==(dtl.getId())) {
 						dtl.setAmount(dtlDto.getAmount());
 						dtl.setProduct(mapPoruct.toProduct(dtlDto.getProductDto()));
+						detailsAuxRemov.add(dtl);
 						//System.out.println("entro");
 					}else {
-						detailsAuxRemov.add(dtl);
+					
 					}	
 			}
 				
@@ -167,21 +175,41 @@ public class InvoiceServiceImpl implements InvoiceService{
 			
 			
 		}
-		
+//		for (Detail detail : detailsAuxRemov) {
+//			for (Detail detail2 : invoiceFound.getDetails()) {
+//				if(detail!=detail2) {
+//					
+//				}
+//			}
+//		}
 		for(int i=0; i<detailsAuxRemov.size(); i++) {
-			invoiceFound.getDetails().remove(i);
+			Detail detal = new Detail();
+			System.out.println("canti"+i);
+			for(int j=0; j<invoiceFound.getDetails().size();j++) {
+				if(detailsAuxRemov.get(i).getId()!=invoiceFound.getDetails().get(j).getId()) {
+					detal = detailDao.findById(invoiceFound.getDetails().get(j).getId()).orElse(null);
+					System.out.println("canti:"+invoiceFound.getDetails().get(j).getAmount());
+	
+					invoiceFound.getDetails().remove(detal);
+					invoiceDao.save(invoiceFound);
+					//detailDao.delete(detal);
+					//invoiceFound.getDetails().get(j).setInvoice(null);
+					//this.detailDao.delete(invoiceFound.getDetails().get(j));
+					System.out.println("elimino"+j);
+				}
+			}
 		}
 		
-		for (Detail detail : detailsAdd) {
+		for (Detail detail : detailsAdd) {			
 			invoiceFound.getDetails().add(detail);
 			detail.setInvoice(invoiceFound);
 			
 		}
-		for (Detail detail :invoiceFound.getDetails()) {
-			System.out.println("final: "+detail.getProduct().getName());
-			
-		}
-		return mapInvoiceAdd.toInvoiceDto(this.invoiceDao.save(invoiceFound));
+//		for (Detail detail :invoiceFound.getDetails()) {
+//			System.out.println("final: "+detail.getProduct().getName());
+//			
+//		}
+		return mapInvoiceAdd.toInvoiceDto((invoiceFound));
 
 		
 	}
