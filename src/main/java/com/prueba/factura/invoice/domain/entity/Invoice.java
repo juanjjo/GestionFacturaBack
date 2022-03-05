@@ -42,7 +42,7 @@ public class Invoice {
 	@Column(name = "fecha", nullable = false)
 	private LocalDate fecha;
 	
-	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, cascade = {CascadeType.MERGE,CascadeType.PERSIST}, fetch = FetchType.EAGER)
 	@JoinColumn(name = "cliente_id")
 	private Customer customer;
 	

@@ -27,4 +27,5 @@ public interface InvoiceService	 {
 	
 	public InvoiceDto updateInvoice(Long id, InvoiceDto invoiceDto);
 	
+	InvoiceDto getOne(Long id);
 }

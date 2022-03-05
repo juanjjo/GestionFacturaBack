@@ -24,6 +24,8 @@ import com.prueba.factura.invoice.infrestructure.mappers.MapDetail;
 import com.prueba.factura.invoice.infrestructure.mappers.MapInvoice;
 import com.prueba.factura.invoice.infrestructure.mappers.MapInvoiceAdd;
 import com.prueba.factura.invoice.infrestructure.mappers.MapInvoiceRevers;
+import com.prueba.factura.product.application.Service.ProductService;
+import com.prueba.factura.product.domain.entity.Product;
 import com.prueba.factura.product.infrestructure.mappers.MapProduct;
 
 
@@ -37,6 +39,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 	private InvoiceRepository invoiceDao;
 	@Autowired
 	private DetailRepository detailDao;
+	@Autowired
+	private CustomerRepository customerDao;
+	
 	@Autowired
 	private MapInvoice mapInvoice;
 	@Autowired
@@ -54,6 +59,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 	private CustomerRepository customerRep;
 
 	
+	@Autowired
+	private ProductService productServ;
+	
 	/**
 	 * todabia crea uno solo.. falta aun q cree, le falta odio
 	 */
@@ -61,15 +69,20 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public InvoiceDto createOne(InvoiceDto invoiceDto) {
 		Invoice invoice = new Invoice();
 		Customer customer = new Customer();
+		Product pro = new Product();
 		List<Detail> details = new ArrayList<Detail>();
 		customer = customerRep.findByEmail(invoiceDto.getCustomerDto().geteMailCustomer()).orElse(null);
 		details = mapDetail.toDetails(invoiceDto.getDetailDtos());
-		if (customer != null) {
-			return null;
-		}
-		System.out.println("detailles: "+details);
-		customer = mapCustomer.toCustomer(invoiceDto.getCustomerDto());
 		invoice = mapInvoiceRever.toInvoice(invoiceDto);
+		if (customer != null) {
+			invoice.setCustomer(customer);
+		}else {
+			customer = mapCustomer.toCustomer(invoiceDto.getCustomerDto());
+			//this.customerDao.save(customer);
+			invoice.setCustomer(customer);
+		}		
+		
+		
 		invoice.setDetails(details);	
 		
 		for (Detail detail : details) {
@@ -92,35 +105,85 @@ public class InvoiceServiceImpl implements InvoiceService{
 	@Override
 	public InvoiceDto deleteOne(Long id) {
 		Invoice invoice = new Invoice();
+		
+		Customer customer = new Customer();
 		invoice = this.invoiceDao.findById(id).orElse(null);
 		if(invoice==null) {
 			return null;
 		}
-	
+		customer = customerRep.findByEmail(invoice.getCustomer().geteMailCustomer()).orElse(null);
+		if(customer!=null) {
+			invoice.setCustomer(null);
+		}
+		
 		this.invoiceDao.delete(invoice);
 		return mapInvoiceAdd.toInvoiceDto(invoice);
+		
 	}
 
 	
+	/**
+	 * actualiza una factura
+	 */
 	@Override
 	public InvoiceDto updateInvoice(Long id, InvoiceDto invoiceDto) {
-		Customer customerUpdate = new Customer();
-		Invoice invoice = new Invoice();
-		Invoice invoiceUpdate = new Invoice();
-		invoice = this.invoiceDao.findById(id).orElse(null);
+		Invoice invoiceFound = new Invoice();
+		invoiceFound = this.invoiceDao.findById(id).orElse(null);
+		System.out.println("eMail"+invoiceFound.getCustomer().geteMailCustomer());
 		
-		if(invoice ==null) {
+		invoiceFound.setCustomer(mapCustomer.toCustomer(invoiceDto.getCustomerDto()));
+
+		
+		if(invoiceFound ==null) {
 			return null;
 		}
-		invoiceUpdate  = mapInvoiceRever.toInvoice(invoiceDto);
-		customerUpdate = invoiceUpdate.getCustomer();
-		customerUpdate.setId(invoice.getCustomer().getId());
+	
 		
-		invoice = invoiceUpdate;
-		invoice.setId(id);
-		invoice.setCustomer(customerUpdate);
-		this.invoiceDao.save(invoice);
-		return mapInvoiceAdd.toInvoiceDto(invoice);
+		Product pro = new Product();
+		Detail detailRegis = new Detail();
+		List<Detail> detailsAuxRemov = new ArrayList<Detail>();
+		List<Detail> detailsAdd = new ArrayList<Detail>();
+		for (DetailDto dtlDto : invoiceDto.getDetailDtos()) {
+			pro=this.productServ.saveProductFromFactura(dtlDto.getProductDto());
+			
+			if(dtlDto.getId()==null) {
+				detailRegis=mapDetail.toDetail(dtlDto);
+				detailRegis.setProduct(pro);
+				detailsAdd.add(detailRegis);	
+			}else
+			{
+				for (Detail dtl : invoiceFound.getDetails()) {
+					
+					if(dtlDto.getId()==(dtl.getId())) {
+						dtl.setAmount(dtlDto.getAmount());
+						dtl.setProduct(mapPoruct.toProduct(dtlDto.getProductDto()));
+						//System.out.println("entro");
+					}else {
+						detailsAuxRemov.add(dtl);
+					}	
+			}
+				
+			}
+			
+			
+		}
+		
+		for(int i=0; i<detailsAuxRemov.size(); i++) {
+			invoiceFound.getDetails().remove(i);
+		}
+		
+		for (Detail detail : detailsAdd) {
+			invoiceFound.getDetails().add(detail);
+			detail.setInvoice(invoiceFound);
+			
+		}
+		for (Detail detail :invoiceFound.getDetails()) {
+			System.out.println("final: "+detail.getProduct().getName());
+			
+		}
+		return mapInvoiceAdd.toInvoiceDto(this.invoiceDao.save(invoiceFound));
+
+		
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -158,6 +221,17 @@ public class InvoiceServiceImpl implements InvoiceService{
 		return mapInvoice.toDtos(invoices);
 	}
 
+	
+	@Override
+	public InvoiceDto getOne(Long id) {
+		Invoice invoice = new Invoice();
+		invoice=this.invoiceDao.findById(id).orElse(null);
+		if(invoice==null) {
+			return null;
+		}
+
+		return this.mapInvoiceAdd.toInvoiceDto(invoice);
+	}
 
 }
 

@@ -47,7 +47,17 @@ public class InvoiceController {
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
+	/**
+	 * delete una factura
+	 * @return
+	 */
+	@DeleteMapping(value="{id}")
+	public ResponseEntity<InvoiceDto> deleteOne(@PathVariable("id") Long invoiceId){
+		InvoiceDto invoceDelete = new InvoiceDto();
+		invoceDelete = this.invoiceServ.deleteOne(invoiceId);
+		return ResponseEntity.ok(invoceDelete);
+	}
 	
 	/**
 	 * recurso actualiza una factura
@@ -64,17 +74,18 @@ public class InvoiceController {
 		}
 	//////////////////////////////////////////// terminados ////////////////////////////
 	
-	/**
-	 * recurso get Facturas
-	 * @return
-	 */
-	@RequestMapping
-	@ResponseBody
-	public ResponseEntity<List<InvoiceReadDto>> findAll(){
-		List<InvoiceReadDto> invoiceDtos = new ArrayList<InvoiceReadDto>();
-		invoiceDtos = this.invoiceServ.getAll();
-		return ResponseEntity.ok(invoiceDtos);
-	}
+	 /**
+		 * recurso get Facturas
+		 * @return
+		 */
+		@RequestMapping
+		@ResponseBody
+		public ResponseEntity<List<InvoiceReadDto>> findAll(){
+			List<InvoiceReadDto> invoiceDtos = new ArrayList<InvoiceReadDto>();
+			invoiceDtos = this.invoiceServ.getAll();
+			return ResponseEntity.ok(invoiceDtos);
+		}
+		
 	
 	/**
 	 * recurso get facturas por nombre de cliente
@@ -104,20 +115,24 @@ public class InvoiceController {
 		
 	}
 	
-	
-	
-	
-	
-	/**
-	 * delete una factura
-	 * @return
-	 */
-	@DeleteMapping(value="{id}")
+
+	@RequestMapping(value="/list/{id}")
 	public ResponseEntity<InvoiceDto> findOne(@PathVariable("id") Long invoiceId){
-		InvoiceDto invoceDelete = new InvoiceDto();
-		invoceDelete = this.invoiceServ.deleteOne(invoiceId);
-		return ResponseEntity.ok(invoceDelete);
+		InvoiceDto bedroomDto = new InvoiceDto();
+		bedroomDto  = invoiceServ.getOne(invoiceId);
+		if(bedroomDto != null) {
+			return ResponseEntity.ok(bedroomDto);
+		}else {
+			return ResponseEntity.noContent().build();
+		}
 	}
+	
+	
+	
+	
+	
+
+	
 	
 	
 }

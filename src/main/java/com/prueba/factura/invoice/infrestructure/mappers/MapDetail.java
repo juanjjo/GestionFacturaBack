@@ -18,10 +18,11 @@ import com.prueba.factura.product.infrestructure.mappers.MapProduct;
 
 public interface MapDetail {
 	
+	@Mapping(source  = "detail.product", target = "productDto")
 	
-	
-	DetailDto toDetailDto(DetailDto detailDto);
-	Detail toDetail(Detail detail);
-	
+	DetailDto toDetailDto(Detail detail);
+
+	Detail toDetail(DetailDto detailDto);
+
 	List<Detail> toDetails(List<DetailDto> detailsDto);
 }

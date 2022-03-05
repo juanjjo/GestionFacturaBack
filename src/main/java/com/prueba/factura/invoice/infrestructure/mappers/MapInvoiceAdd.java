@@ -16,7 +16,7 @@ public interface MapInvoiceAdd {
 
 	
 	@Mapping(source  = "invoice.customer", target = "customerDto")
-	
+	@Mapping(source  = "invoice.details", target = "detailDtos")
 	
 	
 	public InvoiceDto  toInvoiceDto (Invoice invoice);

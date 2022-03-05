@@ -31,7 +31,7 @@ public class Detail {
 	private Invoice invoice;
 	
 
-	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
 	@JoinColumn(name = "producto_id")
 	private Product product;
 	
