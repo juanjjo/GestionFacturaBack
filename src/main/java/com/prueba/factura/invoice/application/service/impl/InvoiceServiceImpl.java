@@ -71,7 +71,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		Product pro = new Product();
 		List<Detail> details = new ArrayList<Detail>();
 		customer = customerRep.findByEmail(invoiceDto.getCustomerDto().geteMailCustomer()).orElse(null);
-		details = mapDetail.toDetails(invoiceDto.getDetailDtos());
+	
 		invoice = mapInvoiceRever.toInvoice(invoiceDto);
 		if (customer != null) {
 			invoice.setCustomer(customer);
@@ -80,16 +80,22 @@ public class InvoiceServiceImpl implements InvoiceService {
 			invoice.setCustomer(customer);
 		}
 
+		Detail detail = new Detail();
 		invoice.setDetails(details);
-
-		for (Detail detail : details) {
-			detail.setInvoice(invoice);
+			
 			for (DetailDto detailDto : invoiceDto.getDetailDtos()) {
+	
 				pro = producDao.save(mapPoruct.toProduct(detailDto.getProductDto()));
 				detail.setProduct(pro);
+				detail.setInvoice(invoice);
+				details.add(detail);
+				//invoice.getDetails().add(detail);
+				
+				detail = new Detail();
+			
 			}
-		}
-		invoice = this.invoiceDao.save(invoice);
+			//invoice.setDetails(details);
+			this.invoiceDao.save(invoice);
 
 		return null;
 	}
