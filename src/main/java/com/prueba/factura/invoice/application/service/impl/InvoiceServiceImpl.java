@@ -2,13 +2,11 @@ package com.prueba.factura.invoice.application.service.impl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.prueba.factura.customer.application.service.impl.CustomerServiceImpl;
 import com.prueba.factura.customer.domain.entity.Customer;
 import com.prueba.factura.customer.domain.repository.CustomerRepository;
 import com.prueba.factura.customer.infrestructure.mappers.MapCustomer;

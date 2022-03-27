@@ -1,13 +1,12 @@
-package com.prueba.factura.customer.application.service.impl;
+package com.prueba.factura.customer.domain.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.prueba.factura.customer.application.service.CustomerService;
+import com.prueba.factura.customer.domain.service.CustomerService;
 import com.prueba.factura.customer.domain.entity.Customer;
 import com.prueba.factura.customer.domain.repository.CustomerRepository;
 import com.prueba.factura.customer.infrestructure.dto.CustomerDto;
-import com.prueba.factura.customer.infrestructure.dto.CustomerAddDto;
 import com.prueba.factura.customer.infrestructure.mappers.MapCustomer;
 
 @Service

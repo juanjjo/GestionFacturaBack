@@ -84,6 +84,6 @@ public class Detail {
 		return "Detail [id=" + id + ", amount=" + amount + ", invoice=" + invoice + ", product=" + product + "]";
 	}
 
-	
+
 	
 }

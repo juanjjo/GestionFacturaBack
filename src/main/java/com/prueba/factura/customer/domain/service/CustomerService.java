@@ -1,4 +1,4 @@
-package com.prueba.factura.customer.application.service;
+package com.prueba.factura.customer.domain.service;
 
 import com.prueba.factura.customer.infrestructure.dto.CustomerDto;
 import com.prueba.factura.customer.infrestructure.dto.CustomerAddDto;
